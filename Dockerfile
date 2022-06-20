@@ -32,7 +32,6 @@ RUN set -ex \
 RUN mkdir -p /frp
 COPY --from=builder /root/frp/frp* /frp/
 RUN cd /frp \
-    && ls -la \
     && mv frpc /usr/bin/ \
     && mv frps /usr/bin/ \
     && rm frp -rf
