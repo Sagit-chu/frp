@@ -26,7 +26,7 @@ RUN set -ex \
     && apk del tzdata \
     && rm -rf /var/cache/apk/*
 
-ARG VER
+# ARG VER
 # ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_${TARGETPLATFORM}.tar.gz
 
 COPY --from=builder /root/frp/frp* /frp
