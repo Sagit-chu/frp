@@ -1,4 +1,4 @@
-FROM alpine
+FROM --platform=${TARGETPLATFORM} alpine:latest
 
 LABEL MAINTAINER sagit <https://github.com/sagit-chu>
 
@@ -14,7 +14,7 @@ RUN set -ex \
     && rm -rf /var/cache/apk/*
 
 ARG VER
-ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_amd64.tar.gz
+ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_${TARGETPLATFORM}.tar.gz
 
 RUN mkdir -p /frp \
     && cd /frp\
