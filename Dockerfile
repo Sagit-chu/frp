@@ -8,8 +8,8 @@ RUN apk add --update git \
     && cd ./frp \
     && git fetch --all --tags \
     && git checkout tags/${TAG} \
-    && go build -ldflags "-s -w" -trimpath -o frps \
-    && go build -ldflags "-s -w" -trimpath -o frpc
+    && go build -ldflags "-s -w" -trimpath -o /root/frp/frps \
+    && go build -ldflags "-s -w" -trimpath -o /root/frp/frpc
 
 FROM --platform=${TARGETPLATFORM} alpine:latest
 
