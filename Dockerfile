@@ -1,3 +1,16 @@
+FROM --platform=${TARGETPLATFORM} golang:alpine as builder
+ARG CGO_ENABLED=0
+ARG TAG
+
+WORKDIR /root
+RUN apk add --update git \
+    && git clone https://github.com/fatedier/frp frp \
+    && cd ./frp \
+    && git fetch --all --tags \
+    && git checkout tags/${TAG} \
+    && go build -ldflags "-s -w" -trimpath -o frps \
+    && go build -ldflags "-s -w" -trimpath -o frpc
+
 FROM --platform=${TARGETPLATFORM} alpine:latest
 
 LABEL MAINTAINER sagit <https://github.com/sagit-chu>
@@ -14,11 +27,11 @@ RUN set -ex \
     && rm -rf /var/cache/apk/*
 
 ARG VER
-ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_${TARGETPLATFORM}.tar.gz
+# ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_${TARGETPLATFORM}.tar.gz
 
+COPY --from=builder /root/frp/frp* /frp
 RUN mkdir -p /frp \
     && cd /frp\
-    && wget -qO- ${URL} | tar xz \
     && mv frp_*/frpc /usr/bin/ \
     && mv frp_*/frps /usr/bin/ \
     && mv frp_*/*.ini ./ \
