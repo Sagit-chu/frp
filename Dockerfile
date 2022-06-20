@@ -30,7 +30,7 @@ RUN set -ex \
 # ARG URL=https://github.com/fatedier/frp/releases/download/v${VER}/frp_${VER}_linux_${TARGETPLATFORM}.tar.gz
 
 RUN mkdir -p /frp
-COPY --from=builder /root/frp/frp* /frp
+COPY --from=builder /root/frp/frp* /frp/
 RUN cd /frp \
     && mv frp/frpc /usr/bin/ \
     && mv frp/frps /usr/bin/ \
