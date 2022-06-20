@@ -32,10 +32,10 @@ RUN set -ex \
 RUN mkdir -p /frp
 COPY --from=builder /root/frp/frp* /frp
 RUN cd /frp \
-    && mv frp_*/frpc /usr/bin/ \
-    && mv frp_*/frps /usr/bin/ \
-    && mv frp_*/*.ini ./ \
-    && rm frp_* -rf
+    && mv frp/frpc /usr/bin/ \
+    && mv frp/frps /usr/bin/ \
+    && mv frp/*.ini ./ \
+    && rm frp -rf
 
 VOLUME /frp
 
