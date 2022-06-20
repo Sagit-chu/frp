@@ -28,9 +28,9 @@ jobs:
     - name: execute
       run: |
         cd $GITHUB_WORKSPACE
-        chmod +x UpdateTag.sh
         git clone https://github.com/Sagit-chu/frp.git frp
         cd frp
+        chmod +x $GITHUB_WORKSPACE/update-tag.sh
         $GITHUB_WORKSPACE/update-tag.sh
     
     - name: Upload
