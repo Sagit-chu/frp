@@ -1,0 +1,47 @@
+name: Release mosdns docker
+
+on:
+  repository_dispatch:
+  workflow_dispatch:
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Set env
+      run: |
+        echo "TAG=$(cat tag)" >> $GITHUB_ENV
+    - name: Set up QEMU
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    # - name: Login to GHCR
+    #   uses: docker/login-action@49ed152c8eca782a232dede0303416e8f356c37b # tag=v2
+    #   with:
+    #     registry: ghcr.io
+    #     username: ${{ secrets.GHCR_USERNAME }}
+    #     password: ${{ secrets.GHCR_TOKEN }}
+
+    - name: Login to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        build-args: |
+          TAG=${{ env.TAG }}
+        platforms: linux/amd64,linux/arm/v7,linux/arm64
+        push: true
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/frp:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/frp:${{ env.TAG }}
+          # ghcr.io/sagit-chu/frp:latest
+          # ghcr.io/sagit-chu/frp:${{ env.TAG }}
