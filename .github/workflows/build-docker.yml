@@ -1,4 +1,4 @@
-name: Release mosdns docker
+name: Release frp docker
 
 on:
   repository_dispatch:
