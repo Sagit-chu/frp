@@ -1,6 +1,6 @@
 FROM --platform=${TARGETPLATFORM} golang:alpine as builder
 ARG CGO_ENABLED=0
-ARG TAG
+ARG TAG=v0.43.0
 
 WORKDIR /root
 RUN apk add --update git \
@@ -32,10 +32,13 @@ RUN set -ex \
 RUN mkdir -p /frp
 COPY --from=builder /root/frp/frp* /frp/
 RUN cd /frp \
-    && mv frp/frpc /usr/bin/ \
-    && mv frp/frps /usr/bin/ \
-    && mv frp/*.ini ./ \
+    && ls -la \
+    && mv frpc /usr/bin/ \
+    && mv frps /usr/bin/ \
     && rm frp -rf
+ADD https://raw.githubusercontent.com/fatedier/frp/dev/conf/frpc_full.ini /frp/frpc.ini
+ADD https://raw.githubusercontent.com/fatedier/frp/dev/conf/frps_full.ini /frp/frps.ini
+
 
 VOLUME /frp
 
